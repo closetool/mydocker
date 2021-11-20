@@ -22,7 +22,7 @@ func RunContainerInitProcess() error {
 
 	path, err := exec.LookPath(cmdArray[0])
 	if err != nil {
-		log.Errorf("Exec loop path error %v", err)
+		log.Errorf("Exec look path error %v", err)
 		return err
 	}
 	log.Infof("Find path %s", path)
@@ -66,6 +66,10 @@ func setUpMount() {
 }
 
 func pivotRoot(root string) error {
+	// refer to https://man7.org/linux/man-pages/man2/pivot_root.2.html
+	if err := syscall.Mount("","/","",syscall.MS_REC|syscall.MS_PRIVATE,""); err != nil {
+		return fmt.Errorf("Mount root to itself error: $v", err)
+	}
 	/**
 	  为了使当前root的老 root 和新 root 不在同一个文件系统下，我们把root重新mount了一次
 	  bind mount是把相同的内容换了一个挂载点的挂载方法

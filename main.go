@@ -4,6 +4,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
 	"os"
+	_ "github.com/closetool/mydocker/nsenter"
 )
 
 const usage = `mydocker is a simple container runtime implementation.
@@ -18,6 +19,12 @@ func main() {
 	app.Commands = []cli.Command{
 		initCommand,
 		runCommand,
+		commitCommand,
+		listCommand,
+		logCommand,
+		execCommand,
+		stopCommand,
+		removeCommand,
 	}
 
 	app.Before = func(context *cli.Context) error {
